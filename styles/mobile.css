@@ -9,3 +9,13 @@
 .container {
     width: 80%;
 }
+
+h1 {
+    margin: 0;
+    font-size: 100px;
+}
+
+h2 {
+    margin: 0;
+    font-size: 30px;
+}
