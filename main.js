@@ -67,7 +67,6 @@ const State = {
 
 var state = State.Q;
 
-
 function random(min, max) {
     return parseInt(Math.random() * (max - min) + min);
 }
@@ -76,13 +75,19 @@ function choice(array) {
     return array[random(0, array.length - 1)];
 }
 
-const question_only = document.getElementById("question_only");
+const no_repeat = 4;
+// 0% to give same question for N turns
+
+const record = [];
+
+// const question_only = document.getElementById("question_only");
 const answer_only = document.getElementById("answer_only");
 const ion_symbol = document.getElementById("ion_symbol");
 const ion_name = document.getElementById("ion_name");
+const info = document.getElementById("info");
 
 function random_key() {
-    return specialize(choice(Object.keys(table)));
+    return specialize(choice(Object.keys(table).filter(x => !record.includes(x))));
 }
 
 function specialize(s) {
@@ -95,8 +100,13 @@ function normalize(s) {
 
 function new_question() {
     answer_only.style.display = "none";
-    question_only.style.display = "";
-    ion_symbol.innerText = random_key();
+    // question_only.style.display = "";
+    let symbol = random_key();
+    ion_symbol.innerText = symbol;
+    record.push(symbol);
+    if (record.length > no_repeat) {
+        record.shift();
+    }
 }
 
 function clicked() {
@@ -104,7 +114,7 @@ function clicked() {
         ion_name.innerText = table[normalize(ion_symbol.innerText)];
 
         answer_only.style.display = "";
-        question_only.style.display = "none";
+        // question_only.style.display = "none";
         state = State.A;
     } else {
         new_question();
@@ -112,11 +122,41 @@ function clicked() {
     }
 }
 
-addEventListener("click", clicked);
+function open_settings() {
+    window.open("settings.html", "_self");
+}
+
+addEventListener("click", event => {
+    // console.log(event.target);
+    if (event.target.tagName !== "BUTTON") {
+        clicked();
+    }
+});
+
+addEventListener("touchstart", event => {
+    if (event.touches.length == 2) {
+        open_settings();
+    }
+});
+
 addEventListener("keyup", event => {
     if (event.code === "Space") {
         clicked();
+    } else if (event.code === "KeyS") {
+        open_settings();
+    } else if (event.code === "KeyC") {
+        localStorage.clear();
     }
 })
+
+function info_gotit() {
+    localStorage.setItem("showninfo", "true")
+    info.style.display = "none";
+}
+
+let showninfo = localStorage.getItem("showninfo");
+if (showninfo === "true") {
+    info.style.display = "none";
+}
 
 window.onload = new_question;
