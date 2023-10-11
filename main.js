@@ -43,7 +43,7 @@ const table = {
     "CN-": "Cyanide ion",
     "MnO₄-": "Permanganate ion",
     "ClO-": "Hypochlorite ion",
-    "ClO₃-": "Chloriate ion",
+    "ClO₃-": "Chlorate ion",
 
     "O2-": "Oxide ion",
     "S2-": "Sulphide ion",
