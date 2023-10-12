@@ -143,7 +143,7 @@ function new_question() {
 function clicked() {
     if (state == State.Q) {
         if (Settings.reverse) {
-            ion_symbol.innerText = table.rget(normalize(ion_name.innerText));
+            ion_symbol.innerText = specialize(table.rget(ion_name.innerText));
         } else {
             ion_name.innerText = table.get(normalize(ion_symbol.innerText));
         }
