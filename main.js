@@ -4,7 +4,7 @@
 // ₂₃₄₅₆₇
 // ²³⁴⁵
 
-const table = {
+const table_tmp = {
     // Cation
 
     "H+": "Hydrogen ion",
@@ -58,14 +58,38 @@ const table = {
     "PO₄3-": "Phosphate ion",
 }
 
+class TwoWayMap {
+    constructor(map) {
+       this.map = map;
+       this.rmap = {};
+       for (const key in map) {
+          const value = map[key];
+          this.rmap[value] = key;   
+       }
+    }
+
+    get(key) { return this.map[key]; }
+    rget(key) { return this.rmap[key]; }
+}
+
+const table = new TwoWayMap(table_tmp);
+
 // --- Page ---
 
 const State = {
     Q: 0,
     A: 1,
+
+    Question: 0,
+    Answer: 1,
+}
+
+let Settings = {
+    reverse: false,
 }
 
 var state = State.Q;
+var is_settings = false;
 
 function random(min, max) {
     return parseInt(Math.random() * (max - min) + min);
@@ -81,13 +105,17 @@ const no_repeat = 4;
 const record = [];
 
 // const question_only = document.getElementById("question_only");
-const answer_only = document.getElementById("answer_only");
+// const answer_only = document.getElementById("answer_only");
 const ion_symbol = document.getElementById("ion_symbol");
 const ion_name = document.getElementById("ion_name");
 const info = document.getElementById("info");
+const main = document.getElementById("main");
 
-function random_key() {
-    return specialize(choice(Object.keys(table).filter(x => !record.includes(x))));
+const settings = document.getElementById("settings");
+const settings_reverse = document.getElementById("settings_reverse");
+
+function randq() {
+    return choice(Object.keys(Settings.reverse ? table.rmap : table.map).filter(x => !record.includes(x)));
 }
 
 function specialize(s) {
@@ -99,21 +127,30 @@ function normalize(s) {
 }
 
 function new_question() {
-    answer_only.style.display = "none";
+    state = State.Q;
+    (Settings.reverse ? ion_symbol : ion_name).style.display = "none";
+    (Settings.reverse ? ion_name : ion_symbol).style.display = "";
     // question_only.style.display = "";
-    let symbol = random_key();
-    ion_symbol.innerText = symbol;
-    record.push(symbol);
+    let q = randq();
+    (Settings.reverse ? ion_name : ion_symbol).innerText = specialize(q);
+    record.push(q);
     if (record.length > no_repeat) {
         record.shift();
     }
+    // console.log(record);
 }
 
 function clicked() {
     if (state == State.Q) {
-        ion_name.innerText = table[normalize(ion_symbol.innerText)];
+        if (Settings.reverse) {
+            ion_symbol.innerText = table.rget(normalize(ion_name.innerText));
+        } else {
+            ion_name.innerText = table.get(normalize(ion_symbol.innerText));
+        }
+        // ion_name.innerText = (Settings.reverse ? table.rget : table.get)(normalize((Settings.reverse ? ion_name : ion_symbol).innerText));
 
-        answer_only.style.display = "";
+        (Settings.reverse ? ion_name : ion_symbol).style.display = "";
+        (Settings.reverse ? ion_symbol : ion_name).style.display = "";
         // question_only.style.display = "none";
         state = State.A;
     } else {
@@ -122,24 +159,29 @@ function clicked() {
     }
 }
 
-function open_settings() {
-    window.open("settings.html", "_self");
-}
-
 addEventListener("click", event => {
     // console.log(event.target);
+    if (is_settings) {
+        return;
+    }
     if (event.target.tagName !== "BUTTON") {
         clicked();
     }
 });
 
 addEventListener("touchstart", event => {
+    if (is_settings) {
+        return;
+    }
     if (event.touches.length == 2) {
         open_settings();
     }
 });
 
 addEventListener("keyup", event => {
+    if (is_settings) {
+        return;
+    }
     if (event.code === "Space") {
         clicked();
     } else if (event.code === "KeyS") {
@@ -159,4 +201,42 @@ if (showninfo === "true") {
     info.style.display = "none";
 }
 
-window.onload = new_question;
+
+
+// --- Settings ---
+
+function open_settings() {
+    // window.open("settings.html", "_self");
+    settings.style.display = "";
+    main.style.display = "none";
+    is_settings = true;
+}
+
+function close_settings() {
+    settings.style.display = "none";
+    main.style.display = "";
+    is_settings = false;
+}
+
+function update_settings() {
+    Settings.reverse = settings_reverse.checked;
+    localStorage.setItem("settings", JSON.stringify(Settings));
+    new_question();
+    record.clear();
+}
+
+function load_settings() {
+    settings_reverse.checked = Settings.reverse;
+}
+
+let set = localStorage.getItem("settings");
+if (set != null) {
+    Settings = JSON.parse(set);
+    load_settings();
+}
+
+
+window.onload = () => {
+    close_settings();
+    new_question();
+};
