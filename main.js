@@ -268,7 +268,7 @@ function load_settings() {
 
 let set = localStorage.getItem("settings");
 if (set != null) {
-    Settings = JSON.parse(set);
+    Settings = { ...Settings, ...JSON.parse(set)};
     load_settings();
 }
 
