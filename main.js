@@ -182,6 +182,7 @@ let Settings = {
     reverse: false,
     color: true,
     color_only: false,
+    uniques: 4,
 }
 
 var state = State.Q;
@@ -213,10 +214,11 @@ const settings = document.getElementById("settings");
 const settings_reverse = document.getElementById("settings_reverse");
 const settings_color = document.getElementById("settings_color");
 const settings_color_only = document.getElementById("settings_color_only");
+const settings_uniques = document.getElementById("settings_uniques");
 
 
 const session_finished = document.getElementById("session_finished");
-const session_finished_result = document.getElementById("session_finished_result");
+// const session_finished_result = document.getElementById("session_finished_result");
 
 const corner = document.getElementById("corner");
 
@@ -251,17 +253,14 @@ function new_question() {
     } else {
         ion_symbol.innerText = specialize(current.symbol);
     }
-    // (Settings.reverse ? ion_name : ion_symbol).innerText = specialize(current.symbol);
     if (is_session) {
-        // session.shift();
         corner.innerText = `${ions.length - session.length}/${ions.length}`;
     } else {
         record.push(current);
-        if (record.length > no_repeat) {
+        if (record.length > Settings.uniques) {
             record.shift();
         }
     }
-    // console.log(record);
 }
 
 function clicked() {
@@ -271,19 +270,11 @@ function clicked() {
         } else {
             ion_name.innerText = current.name;
         }
-        // ion_name.innerText = (Settings.reverse ? table.rget : table.get)(normalize((Settings.reverse ? ion_name : ion_symbol).innerText));
 
         show(ion_name);
         show(ion_symbol);
 
         if (Settings.color) {
-            // let c = name_color[ion_name.innerText];
-            // if (c === undefined) {
-            //     ion_color.innerText = "Colorless";
-            // } else {
-            //     ion_color.innerText = c[2];
-            //     document.body.style.backgroundColor = c[1];
-            // }
             ion_color.innerText = current.color;
             show(ion_color)
             document.body.style.backgroundColor = current.csscolor;
@@ -293,17 +284,16 @@ function clicked() {
 
         state = State.A;
     } else {
+        state = State.Q;
         if (is_session && session.length == 0) {
             open_session_finished();
             return;
         }
         new_question();
-        state = State.Q;
     }
 }
 
 addEventListener("click", event => {
-    // console.log(event.target);
     if (!is_running) {
         return;
     }
@@ -322,6 +312,7 @@ addEventListener("touchstart", event => {
 });
 
 addEventListener("keyup", event => {
+    // console.log(event); // Log keys
     if (!is_running) {
         return;
     }
@@ -331,6 +322,10 @@ addEventListener("keyup", event => {
         open_settings();
     } else if (event.code === "KeyC") {
         localStorage.clear();
+    } else if (event.code === "Period" && is_session) {
+        session.length = 0;
+        state = State.A;
+        clicked();
     }
 })
 
@@ -368,9 +363,10 @@ function session_all() {
 function open_session_finished() {
     show(session_finished);
     hide(main)
-    session_finished_result.innerText = `${ions.length - session.length}/${ions.length}`;
+    // session_finished_result.innerText = `${ions.length - session.length}/${ions.length}`;
     document.body.style.backgroundColor = "white";
     is_running = false;
+    is_session = false;
 }
 
 function close_session_finished() {
@@ -378,6 +374,7 @@ function close_session_finished() {
     show(main);
     is_running = true;
     hide(corner);
+    new_question();
 }
 
 
@@ -385,7 +382,6 @@ function close_session_finished() {
 // --- Settings ---
 
 function open_settings() {
-    // window.open("settings.html", "_self");
     show(settings);
     hide(main);
     is_running = false;
@@ -401,10 +397,11 @@ function update_settings() {
     Settings.reverse = settings_reverse.checked;
     Settings.color = settings_color.checked;
     Settings.color_only = settings_color_only.checked;
+    Settings.uniques = parseInt(settings_uniques.value);
     localStorage.setItem("settings", JSON.stringify(Settings));
     if (!is_session) {
         new_question();
-        record.clear();
+        record.length = 0;
     }
 }
 
@@ -412,6 +409,7 @@ function load_settings() {
     settings_reverse.checked = Settings.reverse;
     settings_color.checked = Settings.color;
     settings_color_only.checked = Settings.color_only;
+    settings_uniques.value = Settings.uniques.toString();
 }
 
 let set = localStorage.getItem("settings");
@@ -420,9 +418,23 @@ if (set != null) {
     load_settings();
 }
 
+function check_input(sender) {
+    let min = sender.min;
+    let max = sender.max;
+    // here we perform the parsing instead of calling another function
+    let value = parseInt(sender.value);
+    if (value > max) {
+        sender.value = max;
+    } else if (value<min) {
+        sender.value = min;
+    }
+}
+
 
 window.onload = () => {
     close_settings();
     close_session_finished();
     new_question();
+    settings_uniques.max = ions.length.toString();
+    settings_uniques.value = "4";
 };

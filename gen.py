@@ -1,3 +1,10 @@
+"""gen.py
+
+Helper for generating list of ions
+Mostly used for migration from separate string mappings to one uniform Ion class
+
+"""
+
 big = {
     "H+": "Hydrogen ion",
     "Na+": "Sodium ion",
