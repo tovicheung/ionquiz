@@ -4,9 +4,8 @@
 // ₂₃₄₅₆₇
 // ²³⁴⁵
 
+/*
 const sym_to_name = {
-    // Cation
-
     "H+": "Hydrogen ion",
     "Na+": "Sodium ion",
     "K+": "Potassium ion",
@@ -31,7 +30,6 @@ const sym_to_name = {
     "Fe3+": "Iron (III) ion",
     "Cr3+": "Chromium (III) ion",
 
-    // Anion
 
     "H-": "Hydride ion",
     "Cl-": "Chloride ion",
@@ -58,37 +56,119 @@ const sym_to_name = {
     "PO₄3-": "Phosphate ion",
 }
 
-const name_color = {
-    "Manganese (II) ion": [0xf9cfdb, "mistyrose", "Very pale pink"],
-    "Nickel (II) ion": [0x94e09c, "lightgreen", "Green"],
-    "Iron (II) ion": [0x85bcae, "aquamarine", "Pale green"],
-    "Cobalt (II) ion": [0xe82e77, "hotpink", "Pink"],
-    "Copper (II) ion": [0x3a9bbf, "dodgerblue", "Blue"],
-    "Iron (III) ion": [0xd1ce28, "gold", "Yellow"],
-    "Chromium (III) ion": [0x2e8b57, "seagreen", "Green"],
-    
-    "Permanganate ion": [0xff00ff, "magenta", "Purple"],
-    "Chromate ion": [0xf0ce0c, "gold", "Yellow"],
-    "Dichromate ion": [0xf01d12, "orangered", "Orange"],
-}
+// const name_color = {
+//     "Manganese (II) ion": [0xf9cfdb, "mistyrose", "Very pale pink"],
+//     "Nickel (II) ion": [0x94e09c, "lightgreen", "Green"],
+//     "Iron (II) ion": [0x85bcae, "aquamarine", "Pale green"],
+//     "Cobalt (II) ion": [0xe82e77, "hotpink", "Pink"],
+//     "Copper (II) ion": [0x3a9bbf, "dodgerblue", "Blue"],
+//     "Iron (III) ion": [0xd1ce28, "gold", "Yellow"],
+//     "Chromium (III) ion": [0x2e8b57, "seagreen", "Green"],
+//     
+//     "Permanganate ion": [0xff00ff, "magenta", "Purple"],
+//     "Chromate ion": [0xf0ce0c, "gold", "Yellow"],
+//     "Dichromate ion": [0xf01d12, "orangered", "Orange"],
+// }
 
-class TwoWayMap {
-    constructor(map) {
-       this.map = map;
-       this.rmap = {};
-       for (const key in map) {
-          const value = map[key];
-          this.rmap[value] = key;   
-       }
+*/
+
+class Ion {
+    constructor(symbol, name, hexcolor, csscolor, color) {
+        this.symbol = symbol;
+        this.name = name;
+        this.hexcolor = hexcolor;
+        this.csscolor = csscolor;
+        this.color = color;
     }
-
-    get(key) { return this.map[key]; }
-    rget(key) { return this.rmap[key]; }
 }
 
-const sym_name = new TwoWayMap(sym_to_name);
+const ions = [
+    new Ion("H+",           "Hydrogen ion",               '0xffffff', 'white', 'Colorless'),
+    new Ion("Na+",          "Sodium ion",                 '0xffffff', 'white', 'Colorless'),
+    new Ion("K+",           "Potassium ion",              '0xffffff', 'white', 'Colorless'),
+    new Ion("Cu+",          "Copper (I) ion",             '0xffffff', 'white', 'Colorless'),
+    new Ion("Ag+",          "Silver ion",                 '0xffffff', 'white', 'Colorless'),
+    new Ion("Hg+",          "Mercury (I) ion",            '0xffffff', 'white', 'Colorless'),
+    new Ion("NH₄+",         "Ammonium ion",               '0xffffff', 'white', 'Colorless'),
+    new Ion("Mg2+",         "Magnesium ion",              '0xffffff', 'white', 'Colorless'),
+    new Ion("Ca2+",         "Calcium ion",                '0xffffff', 'white', 'Colorless'),
+    new Ion("Ba2+",         "Barium ion",                 '0xffffff', 'white', 'Colorless'),
+    new Ion("Pb2+",         "Lead ion",                   '0xffffff', 'white', 'Colorless'),
+    new Ion("Fe2+",         "Iron (II) ion",              '0x85bcae', 'aquamarine', 'Pale green'),
+    new Ion("Co2+",         "Cobalt (II) ion",            '0xe82e77', 'hotpink', 'Pink'),
+    new Ion("Mn2+",         "Manganese (II) ion",         '0xf9cfdb', 'mistyrose', 'Very pale pink'),
+    new Ion("Ni2+",         "Nickel (II) ion",            '0x94e09c', 'lightgreen', 'Green'),
+    new Ion("Cu2+",         "Copper (II) ion",            '0x3a9bbf', 'dodgerblue', 'Blue'),
+    new Ion("Zn2+",         "Zinc (II) ion",              '0xffffff', 'white', 'Colorless'),
+    new Ion("Hg2+",         "Mercury (II) ion",           '0xffffff', 'white', 'Colorless'),
+    new Ion("Al3+",         "Aluminium ion",              '0xffffff', 'white', 'Colorless'),
+    new Ion("Fe3+",         "Iron (III) ion",             '0xd1ce28', 'gold', 'Yellow'),
+    new Ion("Cr3+",         "Chromium (III) ion",         '0x2e8b57', 'seagreen', 'Green'),
+    new Ion("H-",           "Hydride ion",                '0xffffff', 'white', 'Colorless'),
+    new Ion("Cl-",          "Chloride ion",               '0xffffff', 'white', 'Colorless'),
+    new Ion("OH-",          "Hydroxide ion",              '0xffffff', 'white', 'Colorless'),
+    new Ion("NO₃-",         "Nitrate ion",                '0xffffff', 'white', 'Colorless'),
+    new Ion("NO₂-",         "Nitrite ion",                '0xffffff', 'white', 'Colorless'),
+    new Ion("HCO₃-",        "Hydrogencarbonate ion",      '0xffffff', 'white', 'Colorless'),
+    new Ion("HSO₄-",        "Hydrogensulphate ion",       '0xffffff', 'white', 'Colorless'),
+    new Ion("CN-",          "Cyanide ion",                '0xffffff', 'white', 'Colorless'),
+    new Ion("MnO₄-",        "Permanganate ion",           '0xff00ff', 'magenta', 'Purple'),
+    new Ion("ClO-",         "Hypochlorite ion",           '0xffffff', 'white', 'Colorless'),
+    new Ion("ClO₃-",        "Chlorate ion",               '0xffffff', 'white', 'Colorless'),
+    new Ion("O2-",          "Oxide ion",                  '0xffffff', 'white', 'Colorless'),
+    new Ion("S2-",          "Sulphide ion",               '0xffffff', 'white', 'Colorless'),
+    new Ion("SO₄2-",        "Sulphate ion",               '0xffffff', 'white', 'Colorless'),
+    new Ion("SO₃2-",        "Sulphite ion",               '0xffffff', 'white', 'Colorless'),
+    new Ion("SiO₃2-",       "Silicate ion",               '0xffffff', 'white', 'Colorless'),
+    new Ion("CO₃2-",        "Carbonate ion",              '0xffffff', 'white', 'Colorless'),
+    new Ion("CrO₄2-",       "Chromate ion",               '0xf0ce0c', 'gold', 'Yellow'),
+    new Ion("Cr₂O₇2-",      "Dichromate ion",             '0xf01d12', 'orangered', 'Orange'),
+    new Ion("N3-",          "Nitride ion",                '0xffffff', 'white', 'Colorless'),
+    new Ion("PO₄3-",        "Phosphate ion",              '0xffffff', 'white', 'Colorless'),
+];
+
+const colored_ions = ions.filter(ion => ion.color != "Colorless");
+
+// class _Ions {
+//     list = ions_list;
+// 
+//     constructor() {
+//         this.symbol_map = {};
+//         for (let ion in this.list) {
+//             this.symbol_map[ion.symbol] = ion;
+//         }
+//     }
+// }
+
+// for (key in Object.keys(sym_to_name)) {
+//     ions.push(new Ion(key, sym_to_name[key], ...(sym_to_name[key] in Object.keys(name_color) ? name_color[sym_to_name[key]])))
+// }
+
+// class TwoWayMap {
+//     constructor(map) {
+//        this.map = map;
+//        this.rmap = {};
+//        for (const key in map) {
+//           const value = map[key];
+//           this.rmap[value] = key;   
+//        }
+//     }
+// 
+//     get(key) { return this.map[key]; }
+//     rget(key) { return this.rmap[key]; }
+// }
+
+// const sym_name = new TwoWayMap(sym_to_name);
 
 // --- Page ---
+
+function show(e) {
+    e.classList.remove("hidden");
+}
+
+function hide(e) {
+    e.classList.add("hidden");
+}
 
 const State = {
     Q: 0,
@@ -101,10 +181,12 @@ const State = {
 let Settings = {
     reverse: false,
     color: true,
+    color_only: false,
 }
 
 var state = State.Q;
-var is_settings = false;
+var is_running = true;
+var is_session = false;
 
 function random(min, max) {
     return parseInt(Math.random() * (max - min) + min);
@@ -130,9 +212,21 @@ const main = document.getElementById("main");
 const settings = document.getElementById("settings");
 const settings_reverse = document.getElementById("settings_reverse");
 const settings_color = document.getElementById("settings_color");
+const settings_color_only = document.getElementById("settings_color_only");
 
-function randq() {
-    return choice(Object.keys(Settings.reverse ? sym_name.rmap : sym_name.map).filter(x => !record.includes(x)));
+
+const session_finished = document.getElementById("session_finished");
+const session_finished_result = document.getElementById("session_finished_result");
+
+const corner = document.getElementById("corner");
+
+var current;
+
+function generate_question() {
+    if (is_session) {
+        return session.pop();
+    }
+    return choice((Settings.color_only ? colored_ions : ions).filter(x => !record.includes(x)));
 }
 
 function specialize(s) {
@@ -147,16 +241,25 @@ function new_question() {
     document.body.style.backgroundColor = "white";
     
     state = State.Q;
-    (Settings.reverse ? ion_symbol : ion_name).style.display = "none";
-    (Settings.reverse ? ion_name : ion_symbol).style.display = "";
-    ion_color.style.display = "none";
+    hide(Settings.reverse ? ion_symbol : ion_name);
+    show(Settings.reverse ? ion_name : ion_symbol);
+    hide(ion_color);
 
-    // question_only.style.display = "";
-    let q = randq();
-    (Settings.reverse ? ion_name : ion_symbol).innerText = specialize(q);
-    record.push(q);
-    if (record.length > no_repeat) {
-        record.shift();
+    current = generate_question();
+    if (Settings.reverse) {
+        ion_name.innerText = current.name;
+    } else {
+        ion_symbol.innerText = specialize(current.symbol);
+    }
+    // (Settings.reverse ? ion_name : ion_symbol).innerText = specialize(current.symbol);
+    if (is_session) {
+        // session.shift();
+        corner.innerText = `${ions.length - session.length}/${ions.length}`;
+    } else {
+        record.push(current);
+        if (record.length > no_repeat) {
+            record.shift();
+        }
     }
     // console.log(record);
 }
@@ -164,31 +267,36 @@ function new_question() {
 function clicked() {
     if (state == State.Q) {
         if (Settings.reverse) {
-            ion_symbol.innerText = specialize(sym_name.rget(ion_name.innerText));
+            ion_symbol.innerText = specialize(current.symbol);
         } else {
-            ion_name.innerText = sym_name.get(normalize(ion_symbol.innerText));
+            ion_name.innerText = current.name;
         }
         // ion_name.innerText = (Settings.reverse ? table.rget : table.get)(normalize((Settings.reverse ? ion_name : ion_symbol).innerText));
 
-        (Settings.reverse ? ion_name : ion_symbol).style.display = "";
-        (Settings.reverse ? ion_symbol : ion_name).style.display = "";
+        show(ion_name);
+        show(ion_symbol);
 
         if (Settings.color) {
-            let c = name_color[ion_name.innerText];
-            if (c === undefined) {
-                ion_color.innerText = "Colorless";
-            } else {
-                ion_color.innerText = c[2];
-                document.body.style.backgroundColor = c[1];
-            }
-            ion_color.style.display = "";
+            // let c = name_color[ion_name.innerText];
+            // if (c === undefined) {
+            //     ion_color.innerText = "Colorless";
+            // } else {
+            //     ion_color.innerText = c[2];
+            //     document.body.style.backgroundColor = c[1];
+            // }
+            ion_color.innerText = current.color;
+            show(ion_color)
+            document.body.style.backgroundColor = current.csscolor;
         } else {
-            ion_color.style.display = "none";
+            hide(ion_color);
         }
 
-        // question_only.style.display = "none";
         state = State.A;
     } else {
+        if (is_session && session.length == 0) {
+            open_session_finished();
+            return;
+        }
         new_question();
         state = State.Q;
     }
@@ -196,7 +304,7 @@ function clicked() {
 
 addEventListener("click", event => {
     // console.log(event.target);
-    if (is_settings) {
+    if (!is_running) {
         return;
     }
     if (event.target.tagName !== "BUTTON") {
@@ -205,7 +313,7 @@ addEventListener("click", event => {
 });
 
 addEventListener("touchstart", event => {
-    if (is_settings) {
+    if (!is_running) {
         return;
     }
     if (event.touches.length == 2) {
@@ -214,7 +322,7 @@ addEventListener("touchstart", event => {
 });
 
 addEventListener("keyup", event => {
-    if (is_settings) {
+    if (!is_running) {
         return;
     }
     if (event.code === "Space") {
@@ -228,12 +336,48 @@ addEventListener("keyup", event => {
 
 function info_gotit() {
     localStorage.setItem("showninfo", "true")
-    info.style.display = "none";
+    hide(info);
 }
 
 let showninfo = localStorage.getItem("showninfo");
 if (showninfo === "true") {
-    info.style.display = "none";
+    hide(info)
+}
+
+
+// --- Revise all ---
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+let session = [];
+
+function session_all() {
+    is_session = true;
+    session = [...ions];
+    shuffle(session);
+    show(corner)
+    close_settings();
+    new_question();
+}
+
+function open_session_finished() {
+    show(session_finished);
+    hide(main)
+    session_finished_result.innerText = `${ions.length - session.length}/${ions.length}`;
+    document.body.style.backgroundColor = "white";
+    is_running = false;
+}
+
+function close_session_finished() {
+    hide(session_finished);
+    show(main);
+    is_running = true;
+    hide(corner);
 }
 
 
@@ -242,28 +386,32 @@ if (showninfo === "true") {
 
 function open_settings() {
     // window.open("settings.html", "_self");
-    settings.style.display = "";
-    main.style.display = "none";
-    is_settings = true;
+    show(settings);
+    hide(main);
+    is_running = false;
 }
 
 function close_settings() {
-    settings.style.display = "none";
-    main.style.display = "";
-    is_settings = false;
+    hide(settings);
+    show(main);
+    is_running = true;
 }
 
 function update_settings() {
     Settings.reverse = settings_reverse.checked;
     Settings.color = settings_color.checked;
+    Settings.color_only = settings_color_only.checked;
     localStorage.setItem("settings", JSON.stringify(Settings));
-    new_question();
-    record.clear();
+    if (!is_session) {
+        new_question();
+        record.clear();
+    }
 }
 
 function load_settings() {
     settings_reverse.checked = Settings.reverse;
     settings_color.checked = Settings.color;
+    settings_color_only.checked = Settings.color_only;
 }
 
 let set = localStorage.getItem("settings");
@@ -275,5 +423,6 @@ if (set != null) {
 
 window.onload = () => {
     close_settings();
+    close_session_finished();
     new_question();
 };

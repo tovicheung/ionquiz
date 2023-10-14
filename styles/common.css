@@ -1,6 +1,5 @@
 button:hover {
     background-color: white;
-    border: solid 1px black;
     padding: 5px 25px 5px 25px;
     border-radius: 5px;
     color: black;
@@ -143,4 +142,17 @@ input:checked + .slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+#corner {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    margin: 0;
+}
+
+/* --- Presets --- */
+
+.hidden {
+    display: none !important
 }

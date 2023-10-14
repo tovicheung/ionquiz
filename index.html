@@ -19,6 +19,7 @@
     <meta property="og:description" content="Fun quiz of ion (Chemistry)">
 </head>
 <body>
+    <h3 id="corner" class="hidden">test</h3>
     <div class="container">
         <!--
             <span class="material-symbols-outlined">
@@ -36,27 +37,49 @@
                     <button onclick="info_gotit()">Got it!</button>
                 </div>
             </div>
-            <div id="settings">
+            <div id="settings" class="hidden">
                 <h2>Settings</h2>
                 <br>
 
-                <label class="switch">
-                    <input type="checkbox" id="settings_reverse">
-                    <span class="slider round"></span>
-                </label>
-                Reverse (show ion name, memorize symbol)
-                
+                <div id="settings_switches">
+
+                    <label class="switch">
+                        <input type="checkbox" id="settings_reverse">
+                        <span class="slider round"></span>
+                    </label>
+                    Reverse (show ion name, memorize symbol)
+                    
+                    <br>
+                    
+                    <label class="switch">
+                        <input type="checkbox" id="settings_color">
+                        <span class="slider round"></span>
+                    </label>
+                    Ion color
+                    
+                    <br>
+                    
+                    <label class="switch">
+                        <input type="checkbox" id="settings_color_only">
+                        <span class="slider round"></span>
+                    </label>
+                    Only show colored ions
+                    
+                    <br>
+                </div>
                 <br>
                 
-                <label class="switch">
-                    <input type="checkbox" id="settings_color">
-                    <span class="slider round"></span>
-                </label>
-                Ion color
+                <button onclick="session_all()">Revise all (no repeat)</button>
                 
+                <br>
                 <br>
                 <br>
                 <button onclick="close_settings(); update_settings()">Save & Back</button>
+            </div>
+            <div id="session_finished" class="hidden">
+                <h2>Session finished</h2>
+                <h3>Result: <span id="session_finished_result"></span></h3>
+                <button onclick="close_session_finished()">Ok</button>
             </div>
         </div>
     </div>
