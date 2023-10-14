@@ -4,7 +4,7 @@
 // ₂₃₄₅₆₇
 // ²³⁴⁵
 
-const table_tmp = {
+const sym_to_name = {
     // Cation
 
     "H+": "Hydrogen ion",
@@ -58,6 +58,20 @@ const table_tmp = {
     "PO₄3-": "Phosphate ion",
 }
 
+const name_color = {
+    "Manganese (II) ion": [0xf9cfdb, "mistyrose", "Very pale pink"],
+    "Nickel (II) ion": [0x94e09c, "lightgreen", "Green"],
+    "Iron (II) ion": [0x85bcae, "aquamarine", "Pale green"],
+    "Cobalt (II) ion": [0xe82e77, "hotpink", "Pink"],
+    "Copper (II) ion": [0x3a9bbf, "dodgerblue", "Blue"],
+    "Iron (III) ion": [0xd1ce28, "gold", "Yellow"],
+    "Chromium (III) ion": [0x2e8b57, "seagreen", "Green"],
+    
+    "Permanganate ion": [0xff00ff, "magenta", "Purple"],
+    "Chromate ion": [0xf0ce0c, "gold", "Yellow"],
+    "Dichromate ion": [0xf01d12, "orangered", "Orange"],
+}
+
 class TwoWayMap {
     constructor(map) {
        this.map = map;
@@ -72,7 +86,7 @@ class TwoWayMap {
     rget(key) { return this.rmap[key]; }
 }
 
-const table = new TwoWayMap(table_tmp);
+const sym_name = new TwoWayMap(sym_to_name);
 
 // --- Page ---
 
@@ -86,6 +100,7 @@ const State = {
 
 let Settings = {
     reverse: false,
+    color: true,
 }
 
 var state = State.Q;
@@ -108,14 +123,16 @@ const record = [];
 // const answer_only = document.getElementById("answer_only");
 const ion_symbol = document.getElementById("ion_symbol");
 const ion_name = document.getElementById("ion_name");
+const ion_color = document.getElementById("ion_color");
 const info = document.getElementById("info");
 const main = document.getElementById("main");
 
 const settings = document.getElementById("settings");
 const settings_reverse = document.getElementById("settings_reverse");
+const settings_color = document.getElementById("settings_color");
 
 function randq() {
-    return choice(Object.keys(Settings.reverse ? table.rmap : table.map).filter(x => !record.includes(x)));
+    return choice(Object.keys(Settings.reverse ? sym_name.rmap : sym_name.map).filter(x => !record.includes(x)));
 }
 
 function specialize(s) {
@@ -127,9 +144,13 @@ function normalize(s) {
 }
 
 function new_question() {
+    document.body.style.backgroundColor = "white";
+    
     state = State.Q;
     (Settings.reverse ? ion_symbol : ion_name).style.display = "none";
     (Settings.reverse ? ion_name : ion_symbol).style.display = "";
+    ion_color.style.display = "none";
+
     // question_only.style.display = "";
     let q = randq();
     (Settings.reverse ? ion_name : ion_symbol).innerText = specialize(q);
@@ -143,14 +164,28 @@ function new_question() {
 function clicked() {
     if (state == State.Q) {
         if (Settings.reverse) {
-            ion_symbol.innerText = specialize(table.rget(ion_name.innerText));
+            ion_symbol.innerText = specialize(sym_name.rget(ion_name.innerText));
         } else {
-            ion_name.innerText = table.get(normalize(ion_symbol.innerText));
+            ion_name.innerText = sym_name.get(normalize(ion_symbol.innerText));
         }
         // ion_name.innerText = (Settings.reverse ? table.rget : table.get)(normalize((Settings.reverse ? ion_name : ion_symbol).innerText));
 
         (Settings.reverse ? ion_name : ion_symbol).style.display = "";
         (Settings.reverse ? ion_symbol : ion_name).style.display = "";
+
+        if (Settings.color) {
+            let c = name_color[ion_name.innerText];
+            if (c === undefined) {
+                ion_color.innerText = "Colorless";
+            } else {
+                ion_color.innerText = c[2];
+                document.body.style.backgroundColor = c[1];
+            }
+            ion_color.style.display = "";
+        } else {
+            ion_color.style.display = "none";
+        }
+
         // question_only.style.display = "none";
         state = State.A;
     } else {
@@ -220,6 +255,7 @@ function close_settings() {
 
 function update_settings() {
     Settings.reverse = settings_reverse.checked;
+    Settings.color = settings_color.checked;
     localStorage.setItem("settings", JSON.stringify(Settings));
     new_question();
     record.clear();
@@ -227,6 +263,7 @@ function update_settings() {
 
 function load_settings() {
     settings_reverse.checked = Settings.reverse;
+    settings_color.checked = Settings.color;
 }
 
 let set = localStorage.getItem("settings");
