@@ -129,6 +129,8 @@ let Settings = {
     color: true,
     color_only: false,
     uniques: 4,
+    timer: false,
+    timer_duration: 10,
 }
 
 var is_running = true;
@@ -146,6 +148,8 @@ function info_gotit() {
 
 let session = [];
 
+var timer = 0;
+
 
 // --- Page ---
 
@@ -161,10 +165,13 @@ const settings_reverse = document.getElementById("settings_reverse");
 const settings_color = document.getElementById("settings_color");
 const settings_color_only = document.getElementById("settings_color_only");
 const settings_uniques = document.getElementById("settings_uniques");
+const settings_timer = document.getElementById("settings_timer");
+const settings_timer_buttons = document.getElementById("settings_timer_buttons");
 
 const session_finished = document.getElementById("session_finished");
 
-const corner = document.getElementById("corner");
+const corner1 = document.getElementById("corner1");
+const corner2 = document.getElementById("corner2");
 
 // XXX: move to window.onload?
 if (localStorage.getItem("showninfo") === "true") {
@@ -182,6 +189,20 @@ function generate_question() {
     return choice((Settings.color_only ? colored_ions : ions).filter(x => !record.includes(x)));
 }
 
+function start_timer() {
+    corner2.innerText = Settings.timer_duration.toString();
+    timer = setInterval(() => {
+        let secs = parseInt(corner2.innerText) - 1;
+        if (secs <= 0) {
+            hide(corner2);
+            clearInterval(timer);
+            clicked();
+        }
+        corner2.innerText = secs;
+    }, 1000);
+    show(corner2);
+}
+
 function new_question() {
     document.body.style.backgroundColor = "white";
     
@@ -197,18 +218,32 @@ function new_question() {
         ion_symbol.innerText = specialize(current.symbol);
     }
     if (is_session) {
-        corner.innerText = `${ions.length - session.length}/${ions.length}`;
+        corner1.innerText = `${ions.length - session.length}/${ions.length}`;
     } else {
         record.push(current);
         if (record.length > Settings.uniques) {
             record.shift();
         }
     }
+    
+    if (Settings.timer) {
+        clearInterval(timer); // ensure no strange bugs
+        start_timer();
+    }
 }
 
 
 // --- Event handlers ---
 
+var radio_selected;
+
+function radio_clicked(sender) {
+    if (radio_selected !== undefined) {
+        radio_selected.classList.remove("radio_selected");
+    }
+    sender.classList.add("radio_selected");
+    radio_selected = sender;
+}
 
 function clicked() {
     if (state == State.Q) {
@@ -230,6 +265,10 @@ function clicked() {
         }
 
         state = State.A;
+
+        if (Settings.timer) {
+            clearInterval(timer);
+        }
     } else {
         state = State.Q;
         if (is_session && session.length == 0) {
@@ -288,7 +327,7 @@ function start_session() {
     is_session = true;
     session = [...ions];
     shuffle(session);
-    show(corner);
+    show(corner1);
     close_settings();
     new_question();
 }
@@ -300,13 +339,16 @@ function open_session_finished() {
     document.body.style.backgroundColor = "white";
     is_running = false;
     is_session = false;
+    if (Settings.timer) {
+        clearInterval(timer);
+    }
 }
 
 function close_session_finished() {
     hide(session_finished);
     show(main);
     is_running = true;
-    hide(corner);
+    hide(corner1);
     new_question();
 }
 
@@ -319,6 +361,10 @@ function open_settings() {
     hide(main);
     is_running = false;
     is_settings = true;
+    if (Settings.timer) {
+        clearInterval(timer);
+        // start_timer();
+    }
 }
 
 function close_settings() {
@@ -326,6 +372,10 @@ function close_settings() {
     show(main);
     is_running = true;
     is_settings = false;
+    if (Settings.timer) {
+        clearInterval(timer);
+        start_timer();
+    }
 }
 
 function update_settings() {
@@ -334,6 +384,8 @@ function update_settings() {
     Settings.color = settings_color.checked;
     Settings.color_only = settings_color_only.checked;
     Settings.uniques = parseInt(settings_uniques.value);
+    Settings.timer = settings_timer.checked;
+    Settings.timer_duration = parseInt(radio_selected.innerText.replace("s", ""));
     localStorage.setItem("settings", JSON.stringify(Settings));
     if (!is_session) {
         new_question();
@@ -347,6 +399,8 @@ function load_settings() {
     settings_color.checked = Settings.color;
     settings_color_only.checked = Settings.color_only;
     settings_uniques.value = Settings.uniques.toString();
+    settings_timer.checked = Settings.timer;
+    radio_clicked([...settings_timer_buttons.childNodes].filter(e => e.tagName === "BUTTON")[Settings.timer_duration / 5 - 1]);
 }
 
 { // Prevent polluting global namespace
@@ -363,7 +417,7 @@ function load_settings() {
 
 window.onload = () => {
     close_settings();
-    close_session_finished();
-    new_question();
+    close_session_finished(); // new question is generated here!
+    // new_question();
     settings_uniques.max = ions.length.toString();
 };

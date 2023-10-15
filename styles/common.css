@@ -45,7 +45,7 @@ button.thin {
 }
 
 /* The slider */
-.slider {
+.toggle {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -57,7 +57,7 @@ button.thin {
     transition: .2s;
 }
 
-.slider:before {
+.toggle:before {
     position: absolute;
     content: "";
     height: 14px;
@@ -70,26 +70,40 @@ button.thin {
 }
 
 /* Rounded sliders */
-.slider.round {
+.toggle.round {
     border-radius: 34px;
 }
 
-.slider.round:before {
+.toggle.round:before {
     border-radius: 50%;
 }
 
-input:checked + .slider {
+input:checked + .toggle {
     background-color: black;
 }
 
-input:focus + .slider {
+input:focus + .toggle {
     box-shadow: 0 0 1px black;
 }
 
-input:checked + .slider:before {
+input:checked + .toggle:before {
     -webkit-transform: translateX(18px);
     -ms-transform: translateX(18px);
     transform: translateX(18px);
+}
+
+.radio {
+    background-color: white;
+    color: black;
+}
+
+.radio:hover {
+    background-color: gray;
+}
+
+.radio.radio_selected {
+    background-color: black;
+    color: white;
 }
 
 
@@ -117,9 +131,16 @@ gray {
 /* --- Areas --- */
 
 
-#corner {
+#corner1 {
     position: absolute;
     left: 10px;
+    top: 10px;
+    margin: 0;
+}
+
+#corner2 {
+    position: absolute;
+    right   : 10px;
     top: 10px;
     margin: 0;
 }
@@ -139,6 +160,10 @@ gray {
     width: fit-content;
     margin: auto;
     text-align: left;
+}
+
+#settings_timer_buttons {
+    display: inline;
 }
 
 
