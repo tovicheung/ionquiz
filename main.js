@@ -122,6 +122,8 @@ const State = {
     Answer: 1,
 }
 
+var state = State.Q;
+
 let Settings = {
     reverse: false,
     color: true,
@@ -129,9 +131,8 @@ let Settings = {
     uniques: 4,
 }
 
-var state = State.Q;
-
 var is_running = true;
+var is_settings = false;
 var is_session = false;
 
 var current;
@@ -259,6 +260,10 @@ addEventListener("touchstart", event => {
 
 addEventListener("keyup", event => {
     // console.log(event); // Log keys
+    if (is_settings && event.code === "KeyS") {
+        close_settings();
+        return;
+    }
     if (!is_running) {
         return;
     }
@@ -313,12 +318,14 @@ function open_settings() {
     show(settings);
     hide(main);
     is_running = false;
+    is_settings = true;
 }
 
 function close_settings() {
     hide(settings);
     show(main);
     is_running = true;
+    is_settings = false;
 }
 
 function update_settings() {

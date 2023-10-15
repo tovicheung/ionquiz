@@ -33,7 +33,8 @@
             <h2>Settings</h2>
             <br>
 
-            <div id="settings_switches">
+            <div id="settings_center">
+                <h3>Customization</h3>
 
                 <label class="switch">
                     <input type="checkbox" id="settings_reverse">
@@ -63,11 +64,15 @@
                 <input type="number" name="uniques" min="0" max="" id="settings_uniques" oninput="check_input(this);">
                 <label>rounds</label>
                 <button class="thin" onclick="settings_uniques_default();">default</button>
+                
+                <br>
+
+                <h3>Special modes</h3>
+
+                
+                Review all <span id="settings_session_num"></span> cards without duplicates  <button class="thin" onclick="start_session()">start</button>
 
             </div>
-            <br>
-            
-            <button onclick="start_session()">Revise all (no repeat)</button>
             
             <br>
             <br>
@@ -76,7 +81,6 @@
         </div>
         <div id="session_finished" class="hidden">
             <h2>Session finished</h2>
-            <!-- <h3>Result: <span id="session_finished_result"></span></h3> -->
             <button onclick="close_session_finished()">Ok</button>
         </div>
     </div>
