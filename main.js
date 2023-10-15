@@ -105,8 +105,14 @@ function check_input(sender) {
     }
 }
 
+function settings_uniques_default() {
+    settings_uniques.value = uniques_default;
+}
+
 
 // --- State ---
+
+const uniques_default = 4;
 
 const State = {
     Q: 0,

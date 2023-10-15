@@ -20,6 +20,10 @@ button.disabled {
     background-color: grey;
 }
 
+button.thin {
+    padding: 5px;
+}
+
 
 /* Component - Switch */
 
@@ -98,17 +102,15 @@ body {
     margin-bottom: 50px;
 }
 
-/* For Firefox */
-input {
-    /* -moz-appearance: textfield; */
-    width: 100px;
-}
-
 /* Webkit browsers like Safari and Chrome */
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+gray {
+    color: gray;
 }
 
 
