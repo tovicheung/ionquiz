@@ -1,76 +1,5 @@
-
 // --- Data ---
 
-// ₂₃₄₅₆₇
-// ²³⁴⁵
-
-/*
-const sym_to_name = {
-    "H+": "Hydrogen ion",
-    "Na+": "Sodium ion",
-    "K+": "Potassium ion",
-    "Cu+": "Copper (I) ion",
-    "Ag+": "Silver ion",
-    "Hg+": "Mercury (I) ion",
-    "NH₄+": "Ammonium ion",
-
-    "Mg2+": "Magnesium ion",
-    "Ca2+": "Calcium ion",
-    "Ba2+": "Barium ion",
-    "Pb2+": "Lead ion",
-    "Fe2+": "Iron (II) ion",
-    "Co2+": "Cobalt (II) ion",
-    "Mn2+": "Manganese (II) ion",
-    "Ni2+": "Nickel (II) ion",
-    "Cu2+": "Copper (II) ion",
-    "Zn2+": "Zinc (II) ion",
-    "Hg2+": "Mercury (II) ion",
-
-    "Al3+": "Aluminium ion",
-    "Fe3+": "Iron (III) ion",
-    "Cr3+": "Chromium (III) ion",
-
-
-    "H-": "Hydride ion",
-    "Cl-": "Chloride ion",
-    "OH-": "Hydroxide ion",
-    "NO₃-": "Nitrate ion",
-    "NO₂-": "Nitrite ion",
-    "HCO₃-": "Hydrogencarbonate ion",
-    "HSO₄-": "Hydrogensulphate ion",
-    "CN-": "Cyanide ion",
-    "MnO₄-": "Permanganate ion",
-    "ClO-": "Hypochlorite ion",
-    "ClO₃-": "Chlorate ion",
-
-    "O2-": "Oxide ion",
-    "S2-": "Sulphide ion",
-    "SO₄2-": "Sulphate ion",
-    "SO₃2-": "Sulphite ion",
-    "SiO₃2-": "Silicate ion",
-    "CO₃2-": "Carbonate ion",
-    "CrO₄2-": "Chromate ion",
-    "Cr₂O₇2-": "Dichromate ion",
-
-    "N3-": "Nitride ion",
-    "PO₄3-": "Phosphate ion",
-}
-
-// const name_color = {
-//     "Manganese (II) ion": [0xf9cfdb, "mistyrose", "Very pale pink"],
-//     "Nickel (II) ion": [0x94e09c, "lightgreen", "Green"],
-//     "Iron (II) ion": [0x85bcae, "aquamarine", "Pale green"],
-//     "Cobalt (II) ion": [0xe82e77, "hotpink", "Pink"],
-//     "Copper (II) ion": [0x3a9bbf, "dodgerblue", "Blue"],
-//     "Iron (III) ion": [0xd1ce28, "gold", "Yellow"],
-//     "Chromium (III) ion": [0x2e8b57, "seagreen", "Green"],
-//     
-//     "Permanganate ion": [0xff00ff, "magenta", "Purple"],
-//     "Chromate ion": [0xf0ce0c, "gold", "Yellow"],
-//     "Dichromate ion": [0xf01d12, "orangered", "Orange"],
-// }
-
-*/
 
 class Ion {
     constructor(symbol, name, hexcolor, csscolor, color) {
@@ -129,38 +58,32 @@ const ions = [
 
 const colored_ions = ions.filter(ion => ion.color != "Colorless");
 
-// class _Ions {
-//     list = ions_list;
-// 
-//     constructor() {
-//         this.symbol_map = {};
-//         for (let ion in this.list) {
-//             this.symbol_map[ion.symbol] = ion;
-//         }
-//     }
-// }
 
-// for (key in Object.keys(sym_to_name)) {
-//     ions.push(new Ion(key, sym_to_name[key], ...(sym_to_name[key] in Object.keys(name_color) ? name_color[sym_to_name[key]])))
-// }
+// --- Utils ---
 
-// class TwoWayMap {
-//     constructor(map) {
-//        this.map = map;
-//        this.rmap = {};
-//        for (const key in map) {
-//           const value = map[key];
-//           this.rmap[value] = key;   
-//        }
-//     }
-// 
-//     get(key) { return this.map[key]; }
-//     rget(key) { return this.rmap[key]; }
-// }
 
-// const sym_name = new TwoWayMap(sym_to_name);
+function random(min, max) {
+    return parseInt(Math.random() * (max - min) + min);
+}
 
-// --- Page ---
+function choice(array) {
+    return array[random(0, array.length - 1)];
+}
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function specialize(s) {
+    return s.replace("+", "⁺").replace("-", "⁻").replace("2", "²").replace("3", "³");
+}
+
+function normalize(s) {
+    return s.replace("⁺", "+").replace("⁻", "-").replace("²", "2").replace("³", "3");
+}
 
 function show(e) {
     e.classList.remove("hidden");
@@ -169,6 +92,21 @@ function show(e) {
 function hide(e) {
     e.classList.add("hidden");
 }
+
+function check_input(sender) {
+    let min = sender.min;
+    let max = sender.max;
+    // here we perform the parsing instead of calling another function
+    let value = parseInt(sender.value);
+    if (value > max) {
+        sender.value = max;
+    } else if (value<min) {
+        sender.value = min;
+    }
+}
+
+
+// --- State ---
 
 const State = {
     Q: 0,
@@ -186,24 +124,25 @@ let Settings = {
 }
 
 var state = State.Q;
+
 var is_running = true;
 var is_session = false;
 
-function random(min, max) {
-    return parseInt(Math.random() * (max - min) + min);
-}
-
-function choice(array) {
-    return array[random(0, array.length - 1)];
-}
-
-const no_repeat = 4;
-// 0% to give same question for N turns
+var current;
 
 const record = [];
 
-// const question_only = document.getElementById("question_only");
-// const answer_only = document.getElementById("answer_only");
+function info_gotit() {
+    localStorage.setItem("showninfo", "true")
+    hide(info);
+}
+
+let session = [];
+
+
+// --- Page ---
+
+
 const ion_symbol = document.getElementById("ion_symbol");
 const ion_name = document.getElementById("ion_name");
 const ion_color = document.getElementById("ion_color");
@@ -216,27 +155,24 @@ const settings_color = document.getElementById("settings_color");
 const settings_color_only = document.getElementById("settings_color_only");
 const settings_uniques = document.getElementById("settings_uniques");
 
-
 const session_finished = document.getElementById("session_finished");
-// const session_finished_result = document.getElementById("session_finished_result");
 
 const corner = document.getElementById("corner");
 
-var current;
+// XXX: move to window.onload?
+if (localStorage.getItem("showninfo") === "true") {
+    hide(info)
+}
+
+
+// --- Machinery ---
+
 
 function generate_question() {
     if (is_session) {
         return session.pop();
     }
     return choice((Settings.color_only ? colored_ions : ions).filter(x => !record.includes(x)));
-}
-
-function specialize(s) {
-    return s.replace("+", "⁺").replace("-", "⁻").replace("2", "²").replace("3", "³");
-}
-
-function normalize(s) {
-    return s.replace("⁺", "+").replace("⁻", "-").replace("²", "2").replace("³", "3");
 }
 
 function new_question() {
@@ -262,6 +198,10 @@ function new_question() {
         }
     }
 }
+
+
+// --- Event handlers ---
+
 
 function clicked() {
     if (state == State.Q) {
@@ -329,33 +269,15 @@ addEventListener("keyup", event => {
     }
 })
 
-function info_gotit() {
-    localStorage.setItem("showninfo", "true")
-    hide(info);
-}
 
-let showninfo = localStorage.getItem("showninfo");
-if (showninfo === "true") {
-    hide(info)
-}
+// --- Session ---
 
 
-// --- Revise all ---
-
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-
-let session = [];
-
-function session_all() {
+function start_session() {
     is_session = true;
     session = [...ions];
     shuffle(session);
-    show(corner)
+    show(corner);
     close_settings();
     new_question();
 }
@@ -378,8 +300,8 @@ function close_session_finished() {
 }
 
 
-
 // --- Settings ---
+
 
 function open_settings() {
     show(settings);
@@ -394,6 +316,7 @@ function close_settings() {
 }
 
 function update_settings() {
+    // page -> state
     Settings.reverse = settings_reverse.checked;
     Settings.color = settings_color.checked;
     Settings.color_only = settings_color_only.checked;
@@ -406,29 +329,23 @@ function update_settings() {
 }
 
 function load_settings() {
+    // state -> page
     settings_reverse.checked = Settings.reverse;
     settings_color.checked = Settings.color;
     settings_color_only.checked = Settings.color_only;
     settings_uniques.value = Settings.uniques.toString();
 }
 
-let set = localStorage.getItem("settings");
-if (set != null) {
-    Settings = { ...Settings, ...JSON.parse(set)};
+{ // Prevent polluting global namespace
+    let set = localStorage.getItem("settings");
+    if (set != null) {
+        Settings = { ...Settings, ...JSON.parse(set)};
+    }
     load_settings();
 }
 
-function check_input(sender) {
-    let min = sender.min;
-    let max = sender.max;
-    // here we perform the parsing instead of calling another function
-    let value = parseInt(sender.value);
-    if (value > max) {
-        sender.value = max;
-    } else if (value<min) {
-        sender.value = min;
-    }
-}
+
+// --- Onload ---
 
 
 window.onload = () => {
@@ -436,5 +353,4 @@ window.onload = () => {
     close_session_finished();
     new_question();
     settings_uniques.max = ions.length.toString();
-    settings_uniques.value = "4";
 };
