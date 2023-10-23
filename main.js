@@ -22,7 +22,7 @@ const ions = [
     new Ion("Mg2+",         "Magnesium ion",              '0xffffff', 'white', 'Colorless'),
     new Ion("Ca2+",         "Calcium ion",                '0xffffff', 'white', 'Colorless'),
     new Ion("Ba2+",         "Barium ion",                 '0xffffff', 'white', 'Colorless'),
-    new Ion("Pb2+",         "Lead ion",                   '0xffffff', 'white', 'Colorless'),
+    new Ion("Pb2+",         "Lead (II) ion",              '0xffffff', 'white', 'Colorless'),
     new Ion("Fe2+",         "Iron (II) ion",              '0x85bcae', 'aquamarine', 'Pale green'),
     new Ion("Co2+",         "Cobalt (II) ion",            '0xe82e77', 'hotpink', 'Pink'),
     new Ion("Mn2+",         "Manganese (II) ion",         '0xf9cfdb', 'mistyrose', 'Very pale pink'),
