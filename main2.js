@@ -1,1 +1,0 @@
-window.location.replace("http://slamdontscam.com");
