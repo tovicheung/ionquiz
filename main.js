@@ -22,7 +22,7 @@ const ions = [
     new Ion("Mg2+",         "Magnesium ion",              '0xffffff', 'white', 'Colorless'),
     new Ion("Ca2+",         "Calcium ion",                '0xffffff', 'white', 'Colorless'),
     new Ion("Ba2+",         "Barium ion",                 '0xffffff', 'white', 'Colorless'),
-    new Ion("Pb2+",         "Lead (II) ion",              '0xffffff', 'white', 'Colorless'),
+    new Ion("Pb2+",         "Lead ion",                   '0xffffff', 'white', 'Colorless'),
     new Ion("Fe2+",         "Iron (II) ion",              '0x85bcae', 'aquamarine', 'Pale green'),
     new Ion("Co2+",         "Cobalt (II) ion",            '0xe82e77', 'hotpink', 'Pink'),
     new Ion("Mn2+",         "Manganese (II) ion",         '0xf9cfdb', 'mistyrose', 'Very pale pink'),
@@ -33,6 +33,11 @@ const ions = [
     new Ion("Al3+",         "Aluminium ion",              '0xffffff', 'white', 'Colorless'),
     new Ion("Fe3+",         "Iron (III) ion",             '0xd1ce28', 'gold', 'Yellow'),
     new Ion("Cr3+",         "Chromium (III) ion",         '0x2e8b57', 'seagreen', 'Green'),
+    new Ion("Ti3+",         "Titanium (III) ion",         '0x7f007f', 'rebeccapurple', 'Purple'),
+    new Ion("V2+",          "Vanadium (II) ion",          '0x762fa4', 'violet', 'Violet'),
+    new Ion("V3+",          "Vanadium (III) ion",         '0x3aa456', 'seagreen', 'Green'),
+    new Ion("Mn3+",         "Manganese (III) ion",        '0xaf4700', 'brown', 'Brown'),
+    new Ion("MnO₄2-",       "Manganese (VI) ion",         '0x177472', 'teal', 'Green'),
     new Ion("H-",           "Hydride ion",                '0xffffff', 'white', 'Colorless'),
     new Ion("Cl-",          "Chloride ion",               '0xffffff', 'white', 'Colorless'),
     new Ion("OH-",          "Hydroxide ion",              '0xffffff', 'white', 'Colorless'),
@@ -150,10 +155,6 @@ let session = [];
 
 var timer = 0;
 
-
-// --- Page ---
-
-
 const ion_symbol = document.getElementById("ion_symbol");
 const ion_name = document.getElementById("ion_name");
 const ion_color = document.getElementById("ion_color");
@@ -173,14 +174,9 @@ const session_finished = document.getElementById("session_finished");
 const corner1 = document.getElementById("corner1");
 const corner2 = document.getElementById("corner2");
 
-// XXX: move to window.onload?
 if (localStorage.getItem("showninfo") === "true") {
     hide(info)
 }
-
-
-// --- Machinery ---
-
 
 function generate_question() {
     if (is_session) {
@@ -259,7 +255,7 @@ function clicked() {
         if (Settings.color) {
             ion_color.innerText = current.color;
             show(ion_color)
-            document.body.style.backgroundColor = current.csscolor;
+            document.body.style.backgroundColor = `#${current.hexcolor.slice(2)}`;
         } else {
             hide(ion_color);
         }
@@ -410,10 +406,6 @@ function load_settings() {
     }
     load_settings();
 }
-
-
-// --- Onload ---
-
 
 window.onload = () => {
     close_settings();

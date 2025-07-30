@@ -29,6 +29,14 @@ big = {
     "Al3+": "Aluminium ion",
     "Fe3+": "Iron (III) ion",
     "Cr3+": "Chromium (III) ion",
+    
+    # F5
+    "Ti3+": "Titanium (III) ion",
+    "V2+": "Vanadium (II) ion",
+    "V3+": "Vanadium (III) ion",
+    "Mn3+": "Manganese (III) ion",
+    "MnO₄2-": "Manganese (VI) ion",
+    # end F5
 
 
     "H-": "Hydride ion",
@@ -67,6 +75,14 @@ color = {
     "Permanganate ion": [0xff00ff, "magenta", "Purple"],
     "Chromate ion": [0xf0ce0c, "gold", "Yellow"],
     "Dichromate ion": [0xf01d12, "orangered", "Orange"],
+
+    # F5
+    "Titanium (III) ion": [0x7f007f, "rebeccapurple", "Purple"],
+    "Vanadium (II) ion": [0x762fa4, "violet", "Violet"],
+    "Vanadium (III) ion": [0x3aa456, "seagreen", "Green"],
+    "Manganese (III) ion": [0xaf4700, "brown", "Brown"],
+    "Manganese (VI) ion": [0x177472, "teal", "Green"],
+    # end F5
 }
 
 for k, v in big.items():
