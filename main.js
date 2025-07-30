@@ -35,7 +35,7 @@ const ions = [
     new Ion("Ti3+",         "Titanium (III) ion",         '0x7f007f', 'Purple'),
     new Ion("V2+",          "Vanadium (II) ion",          '0x762fa4', 'Violet'),
     new Ion("V3+",          "Vanadium (III) ion",         '0x3aa456', 'Green'),
-    new Ion("Mn3+",         "Manganese (III) ion",        '0xaf4700', 'Brown'),
+    new Ion("Mn3+",         "Manganese (III) ion",        '0xaf4700', 'Red'),
     new Ion("MnO₄2-",       "Manganese (VI) ion",         '0x177472', 'Green'),
     new Ion("Sc3+",         "Scandium ion",               '0xffffff', 'Colorless'),
     new Ion("H-",           "Hydride ion",                '0xffffff', 'Colorless'),

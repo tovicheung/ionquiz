@@ -75,7 +75,7 @@ color = {
     "Titanium (III) ion": [0x7f007f, "Purple"],
     "Vanadium (II) ion": [0x762fa4, "Violet"],
     "Vanadium (III) ion": [0x3aa456, "Green"],
-    "Manganese (III) ion": [0xaf4700, "Brown"],
+    "Manganese (III) ion": [0xaf4700, "Red"],
     "Manganese (VI) ion": [0x177472, "Green"],
     # end F5
 }
