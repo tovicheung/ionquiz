@@ -1,11 +1,4 @@
-"""gen.py
-
-Helper for generating list of ions
-Mostly used for migration from separate string mappings to one uniform Ion class
-
-"""
-
-big = {
+ions = {
     "H+": "Hydrogen ion",
     "Na+": "Sodium ion",
     "K+": "Potassium ion",
@@ -36,6 +29,8 @@ big = {
     "V3+": "Vanadium (III) ion",
     "Mn3+": "Manganese (III) ion",
     "MnO₄2-": "Manganese (VI) ion",
+
+    "Sc3+": "Scandium ion",
     # end F5
 
 
@@ -64,28 +59,28 @@ big = {
     "PO₄3-": "Phosphate ion",
 }
 color = {
-    "Manganese (II) ion": [0xf9cfdb, "mistyrose", "Very pale pink"],
-    "Nickel (II) ion": [0x94e09c, "lightgreen", "Green"],
-    "Iron (II) ion": [0x85bcae, "aquamarine", "Pale green"],
-    "Cobalt (II) ion": [0xe82e77, "hotpink", "Pink"],
-    "Copper (II) ion": [0x3a9bbf, "dodgerblue", "Blue"],
-    "Iron (III) ion": [0xd1ce28, "gold", "Yellow"],
-    "Chromium (III) ion": [0x2e8b57, "seagreen", "Green"],
+    "Manganese (II) ion": [0xf9cfdb, "Very pale pink"],
+    "Nickel (II) ion": [0x94e09c, "Green"],
+    "Iron (II) ion": [0x85bcae, "Pale green"],
+    "Cobalt (II) ion": [0xe82e77, "Pink"],
+    "Copper (II) ion": [0x3a9bbf, "Blue"],
+    "Iron (III) ion": [0xd1ce28, "Yellow"],
+    "Chromium (III) ion": [0x2e8b57, "Green"],
     
-    "Permanganate ion": [0xff00ff, "magenta", "Purple"],
-    "Chromate ion": [0xf0ce0c, "gold", "Yellow"],
-    "Dichromate ion": [0xf01d12, "orangered", "Orange"],
+    "Permanganate ion": [0xff00ff, "Purple"],
+    "Chromate ion": [0xf0ce0c, "Yellow"],
+    "Dichromate ion": [0xf01d12, "Orange"],
 
     # F5
-    "Titanium (III) ion": [0x7f007f, "rebeccapurple", "Purple"],
-    "Vanadium (II) ion": [0x762fa4, "violet", "Violet"],
-    "Vanadium (III) ion": [0x3aa456, "seagreen", "Green"],
-    "Manganese (III) ion": [0xaf4700, "brown", "Brown"],
-    "Manganese (VI) ion": [0x177472, "teal", "Green"],
+    "Titanium (III) ion": [0x7f007f, "Purple"],
+    "Vanadium (II) ion": [0x762fa4, "Violet"],
+    "Vanadium (III) ion": [0x3aa456, "Green"],
+    "Manganese (III) ion": [0xaf4700, "Brown"],
+    "Manganese (VI) ion": [0x177472, "Green"],
     # end F5
 }
 
-for k, v in big.items():
+for k, v in ions.items():
     print(
-        f"    new Ion({f'"{k}",': <16}{f'"{v}",': <30}{(lambda l: str([hex(l[0])] + l[1:])[1:-1])(color.get(v, [0xffffff, "white", "Colorless"]))}),"
+        f"    new Ion({f'"{k}",': <16}{f'"{v}",': <30}{(lambda l: str([hex(l[0])] + l[1:])[1:-1])(color.get(v, [0xffffff, "Colorless"]))}),"
     )
